@@ -17,6 +17,17 @@
                 class="<?= $formFile ?> flex-1">
         </div>
 
+        <?php $categories = $categoryObj->readAllCategory(); ?>
+
+        <div class="form-group">
+            <select name="category_id" class="form-control mt-4">
+                <option value="" selected disabled>Select a category</option>
+                <?php foreach ($categories as $category) { ?>
+                    <option value="<?= $category['category_id'] ?>"><?= $category['name'] ?></option>
+                <?php } ?>
+            </select>
+        </div>
+
         <div class="form-group">
             <textarea name="description" class="form-control mt-4" placeholder="Submit an article!"></textarea>
         </div>
