@@ -5,7 +5,7 @@ $requests = $editRequestObj->getRequestsForOwner($_SESSION['user_id']);
 ?>
 
 <?php include 'includes/mainStart.php'; ?>
-<div class="col-md-6">
+<div class="col-md-9">
 
     <h2 class="text-2xl font-bold mb-4">Edit Requests</h2>
 

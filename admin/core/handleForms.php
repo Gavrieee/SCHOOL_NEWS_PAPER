@@ -66,6 +66,7 @@ if (isset($_GET['logoutUserBtn'])) {
 if (isset($_POST['insertAdminArticleBtn'])) {
 	$title = $_POST['title'];
 	$description = $_POST['description'];
+	$category = $_POST['category_id'];
 	$author_id = $_SESSION['user_id'];
 
 	// Handle file upload
@@ -89,18 +90,16 @@ if (isset($_POST['insertAdminArticleBtn'])) {
 	}
 
 	// Insert into DB
-	if ($articleObj->createArticle($title, $description, $photo_url, $author_id)) {
+	if ($articleObj->createArticle($title, $description, $category, $photo_url, $author_id)) {
 		header("Location: ../index.php");
 		exit;
 	}
-
-
-
 }
 
 if (isset($_POST['editArticleBtn'])) {
 	$title = $_POST['title'];
 	$description = $_POST['description'];
+	$category = $_POST['category_id'];
 	$article_id = $_POST['article_id'];
 
 	// Default: keep old photo
@@ -122,7 +121,7 @@ if (isset($_POST['editArticleBtn'])) {
 		}
 	}
 
-	if ($articleObj->updateArticle($article_id, $title, $description, $photo_url)) {
+	if ($articleObj->updateArticle($article_id, $title, $description, $category, $photo_url)) {
 		header("Location: ../articles_submitted.php");
 	}
 
@@ -140,5 +139,12 @@ if (isset($_POST['updateArticleVisibility'])) {
 	$article_id = $_POST['article_id'];
 	$status = $_POST['status'];
 	echo $articleObj->updateArticleVisibility($article_id, $status);
+	header("Location: ../index.php");
+}
+
+if (isset($_POST['newCategoryBtn'])) {
+	$name = $_POST['new_category'];
+	$categoryObj->createCategory($name);
+
 	header("Location: ../index.php");
 }

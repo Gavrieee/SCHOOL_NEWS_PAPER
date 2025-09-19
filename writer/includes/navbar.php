@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark p-4 w-full fixed-top" style="background-color: #355E3B;">
+<nav class="navbar navbar-expand-lg navbar-dark p-4 w-full sticky top-0 z-50" style="background-color: #355E3B;">
     <a class="navbar-brand" href="index.php">Writer Panel!</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

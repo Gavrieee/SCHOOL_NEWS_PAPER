@@ -3,7 +3,7 @@
 
 <?php include 'includes/mainStart.php'; ?>
 
-<div class="col-md-6">
+<div class="col-md-9">
     <form action="core/handleForms.php" method="POST" enctype="multipart/form-data">
         <!-- image preview -->
         <div class="<?= $centerDIV ?>">
@@ -25,48 +25,75 @@
 
     <?php $articles = $articleObj->getActiveArticles(); ?>
     <?php foreach ($articles as $article) { ?>
-        <div class="card mt-4 shadow">
-            <div class="card-body">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden mt-6 border border-gray-200">
+            <div class="p-6 flex flex-col md:flex-row gap-6">
 
+                <?php $alreadyRequested = $editRequestObj->hasActiveOrAcceptedRequest($article['article_id'], $_SESSION['user_id']); ?>
+
+                <!-- Article Image -->
                 <?php if ($article['photo_url']) { ?>
                     <img src="<?php echo $article['photo_url']; ?>" alt="Article Image"
-                        class="w-48 h-48 object-cover rounded-lg border border-gray-300 shadow">
-
+                        class="w-full md:w-48 h-48 object-cover rounded-lg shadow-sm">
                 <?php } ?>
 
-                <?php
-                $alreadyRequested = $editRequestObj->hasActiveOrAcceptedRequest($article['article_id'], $_SESSION['user_id']);
-                ?>
+                <!-- Article Content -->
+                <div class="flex-1 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h1 class="text-xl font-semibold text-gray-800">
+                            <?php echo htmlspecialchars($article['title']); ?>
+                        </h1>
 
-                <h1><?php echo $article['title']; ?></h1>
-                <?php if ($article['is_admin'] == 1) { ?>
-                    <p><small class="bg-primary text-white p-1">
-                            Message From Admin
-                        </small></p>
-                <?php } ?>
+                        <!-- Admin Badge -->
+                        <?php if ($article['is_admin'] == 1) { ?>
+                            <span class="bg-blue-600 text-white text-xs font-medium px-2 py-1 rounded">
+                                Message From Admin
+                            </span>
+                        <?php } ?>
+                    </div>
 
-                <small><strong><?php echo $article['username'] ?></strong> -
-                    <?php echo $article['created_at']; ?> </small>
-                <p><?php echo $article['content']; ?> </p>
+                    <!-- Author & Date -->
+                    <p class="text-sm text-gray-500">
+                        <strong class="text-gray-700"><?php echo htmlspecialchars($article['username']); ?></strong>
+                        · <?php echo date("M d, Y", strtotime($article['created_at'])); ?>
+                    </p>
 
-                <?php if ($article['author_id'] != $_SESSION['user_id'] && $article['is_admin'] == 0): ?>
-                    <?php if (!$alreadyRequested): ?>
-                        <form action="core/handleForms.php" method="POST">
-                            <input type="hidden" name="article_id" value="<?= $article['article_id'] ?>">
-                            <input type="hidden" name="owner_id" value="<?= $article['author_id'] ?>">
-                            <button type="submit" name="requestEditBtn" class="bg-yellow-500 text-white px-3 py-1 rounded">
-                                Request Edit
-                            </button>
-                        </form>
-                    <?php else: ?>
-                        <p class="text-gray-500 italic text-sm">
-                            Edit request already sent or approved
+                    <!-- Category -->
+                    <?php if (!empty($article['category_name'])) { ?>
+                        <p class="text-sm font-semibold italic text-gray-500 border rounded-full w-fit px-3 py-1">
+                            <strong class="text-gray-700"><?php echo htmlspecialchars($article['category_name']); ?></strong>
                         </p>
-                    <?php endif; ?>
-                <?php endif; ?>
+                    <?php } ?>
 
+                    <!-- Content -->
+                    <p class="text-gray-700 leading-relaxed">
+                        <?php echo nl2br(htmlspecialchars($article['content'])); ?>
+                    </p>
+
+                    <!-- Edit Request -->
+                    <div class="mt-auto">
+                        <?php if ($article['author_id'] != $_SESSION['user_id'] && $article['is_admin'] == 0): ?>
+                            <?php if (!$alreadyRequested): ?>
+                                <form action="core/handleForms.php" method="POST" class="mt-3">
+                                    <input type="hidden" name="article_id" value="<?= $article['article_id'] ?>">
+                                    <input type="hidden" name="owner_id" value="<?= $article['author_id'] ?>">
+                                    <button type="submit" name="requestEditBtn"
+                                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                        Request Edit
+                                    </button>
+                                </form>
+                            <?php else: ?>
+                                <p class="text-gray-500 italic text-sm mt-2">
+                                    Edit request already sent or approved
+                                </p>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+
+
+                </div>
             </div>
         </div>
+
     <?php } ?>
 </div>
 <?php include 'includes/mainEnd.php'; ?>

@@ -1,6 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-dark p-4" style="background-color: #008080;">
+<nav class="navbar navbar-expand-lg navbar-dark p-4 w-full sticky top-0 z-50" style="background-color: #008080;">
   <a class="navbar-brand" href="index.php">Admin Side</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+    aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
@@ -17,4 +18,3 @@
     </ul>
   </div>
 </nav>
-

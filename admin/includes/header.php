@@ -8,6 +8,8 @@ if (!$userObj->isLoggedIn()) {
 if (!$userObj->isAdmin()) {
     header("Location: ../writer/index.php");
 }
+
+include_once '../globalTailwind.php';
 ?>
 
 <!doctype html>

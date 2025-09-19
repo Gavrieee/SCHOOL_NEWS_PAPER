@@ -4,19 +4,52 @@
   <div class="display-4 text-center">Hello there and welcome to the admin side! <span
       class="text-success"><?php echo $_SESSION['username']; ?></span>. Here are all the articles</div>
   <div class="row justify-content-center">
-    <div class="col-md-6">
+
+
+    <div class="col-md-9">
+
+      <div class="">
+        <form action="core/handleForms.php" method="POST">
+          <div class="form-group flex flex-col mt-4 pt-3 p-4 border rounded-md">
+            <label for="category" class="font-semibold">Add a new category</label>
+            <div class="flex flex-row gap-4">
+              <input type="text" name="new_category" class="flex-grow form-control" placeholder="Enter category"
+                required>
+              <button class="btn btn-primary px-4 whitespace-nowrap" name="newCategoryBtn">
+                Add
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+
       <form action="core/handleForms.php" method="POST" enctype="multipart/form-data">
         <!-- image preview -->
-        <img id="photoPreview" class="hidden w-48 h-48 object-cover rounded-lg border border-gray-300 shadow"
-          alt="Preview">
+
+        <div class="<?= $centerDIV ?>">
+          <img id="photoPreview" class="<?= $imgPreview ?>" alt="Preview">
+        </div>
+
+        <?php $categories = $categoryObj->readAllCategory(); ?>
+
         <div class="form-group flex flex-row items-center space-x-4">
-          <input type="text" class="form-control" name="title" placeholder="Input title here">
+          <input type="text" class="form-control" name="title" placeholder="Input title here" required>
           <input type="file" name="photo" id="photoInput" accept="image/png, image/jpeg"
-            class="text-sm  cursor-pointer">
+            class="text-sm  cursor-pointer <?= $formFile ?>">
         </div>
 
         <div class="form-group">
-          <textarea name="description" class="form-control mt-4" placeholder="Message as admin"></textarea>
+          <select name="category_id" class="form-control mt-4">
+            <option value="" selected disabled>Select a category</option>
+            <?php foreach ($categories as $category) { ?>
+              <option value="<?= $category['category_id'] ?>"><?= $category['name'] ?></option>
+            <?php } ?>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <textarea name="description" class="form-control mt-4" placeholder="Message as admin" required></textarea>
         </div>
         <input type="submit" class="btn btn-primary form-control float-right mt-4 mb-4" name="insertAdminArticleBtn">
       </form>
@@ -50,6 +83,15 @@
                 <strong class="text-gray-700"><?php echo htmlspecialchars($article['username']); ?></strong>
                 · <?php echo date("M d, Y", strtotime($article['created_at'])); ?>
               </p>
+
+              <?php if (empty($article['category_name'])) { ?>
+              <?php } else { ?>
+                <p class="text-sm font-semibold italic text-gray-500 border rounded-full w-fit px-3 py-1">
+                  <strong class="text-gray-700"><?php echo htmlspecialchars($article['category_name']); ?></strong>
+                </p>
+              <?php } ?>
+
+
 
               <p class="text-gray-700 leading-relaxed">
                 <?php echo nl2br(htmlspecialchars($article['content'])); ?>
